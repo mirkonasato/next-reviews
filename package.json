@@ -2,7 +2,9 @@
   "name": "next-reviews",
   "private": true,
   "scripts": {
-    "dev": "next dev"
+    "build": "next build",
+    "dev": "next dev",
+    "start": "next start"
   },
   "dependencies": {
     "next": "^13.4.4",
