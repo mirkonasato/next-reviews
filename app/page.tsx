@@ -1,6 +1,11 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import Heading from '@/components/Heading';
 import { getFeaturedReview } from '@/lib/reviews';
+
+export const metadata: Metadata = {
+  title: 'Indie Gamer',
+};
 
 export default async function HomePage() {
   const review = await getFeaturedReview();
