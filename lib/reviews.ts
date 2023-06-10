@@ -1,4 +1,3 @@
-import { readdir } from 'node:fs/promises';
 import { marked } from 'marked';
 import qs from 'qs';
 
@@ -50,15 +49,18 @@ export async function getReviews(): Promise<Review[]> {
 }
 
 export async function getSlugs(): Promise<string[]> {
-  const files = await readdir('./content/reviews');
-  return files.filter((file) => file.endsWith('.md'))
-    .map((file) => file.slice(0, -'.md'.length));
+  const { data } = await fetchReviews({
+    fields: ['slug'],
+    sort: ['publishedAt:desc'],
+    pagination: { pageSize: 100 },
+  });
+  return data.map((item: CmsItem) => item.attributes.slug);
 }
 
 async function fetchReviews(parameters: any) {
   const url = `${CMS_URL}/api/reviews?`
     + qs.stringify(parameters, { encodeValuesOnly: true });
-  console.log('[fetchReviews]:', url);
+  // console.log('[fetchReviews]:', url);
   const response = await fetch(url);
   if (!response.ok) {
     throw new Error(`CMS returned ${response.status} for ${url}`);
