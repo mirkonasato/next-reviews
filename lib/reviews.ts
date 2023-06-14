@@ -27,6 +27,8 @@ export interface PaginatedReviews {
   reviews: Review[];
 }
 
+export type SearchableReview = Pick<Review, 'slug' | 'title'>;
+
 export async function getReview(slug: string): Promise<FullReview | null> {
   const { data } = await fetchReviews({
     filters: { slug: { $eq: slug } },
