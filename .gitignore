@@ -1,3 +1,6 @@
+# NOTE: the env.local file should normally be ignored
+# but I've commented out the next line to include it in the lecture diffs
+#/env*.local
 /.next/
 /node_modules/
 /out/
