@@ -7,9 +7,11 @@ export const metadata = {
   title: 'Reviews',
 };
 
+const PAGE_SIZE = 6;
+
 export default async function ReviewsPage({ searchParams }) {
   const page = parsePageParam(searchParams.page);
-  const reviews = await getReviews(6);
+  const reviews = await getReviews(PAGE_SIZE, page);
   console.log('[ReviewsPage] rendering:', page);
   return (
     <>
