@@ -26,8 +26,8 @@ export async function generateMetadata({ params: { slug } }: ReviewPageProps): P
 }
 
 export default async function ReviewPage({ params: { slug } }: ReviewPageProps) {
+  console.log('[ReviewPage] rendering', slug);
   const review = await getReview(slug);
-  // console.log('[ReviewPage] review', review);
   return (
     <>
       <Heading>{review.title}</Heading>
