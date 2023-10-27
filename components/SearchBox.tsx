@@ -3,17 +3,25 @@
 import type { SearchableReview } from '@/lib/reviews';
 import { Combobox } from '@headlessui/react';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useIsClient } from '@/lib/hooks';
+import { searchReviews } from '@/lib/reviews';
 
-export interface SearchBoxProps {
-  reviews: SearchableReview[];
-}
-
-export default function SearchBox({ reviews }: SearchBoxProps) {
+export default function SearchBox() {
   const router = useRouter();
   const isClient = useIsClient();
   const [query, setQuery] = useState('');
+  const [reviews, setReviews] = useState<SearchableReview[]>([]);
+  useEffect(() => {
+    if (query.length > 1) {
+      (async () => {
+        const reviews = await searchReviews(query);
+        setReviews(reviews);
+      })();
+    } else {
+      setReviews([]);
+    }
+  }, [query]);
 
   const handleChange = (review: SearchableReview) => {
     router.push(`/reviews/${review.slug}`);
@@ -23,9 +31,6 @@ export default function SearchBox({ reviews }: SearchBoxProps) {
   if (!isClient) {
     return null;
   }
-  const filtered = reviews.filter((review) =>
-    review.title.toLowerCase().includes(query.toLowerCase())
-  ).slice(0, 5);
   return (
     <div className="relative w-48">
       <Combobox onChange={handleChange}>
@@ -34,7 +39,7 @@ export default function SearchBox({ reviews }: SearchBoxProps) {
           className="border px-2 py-1 rounded w-full"
         />
         <Combobox.Options className="absolute bg-white py-1 w-full">
-          {filtered.map((review) => (
+          {reviews.map((review) => (
             <Combobox.Option key={review.slug} value={review}>
               {({ active }) => (
                 <span className={`block px-2 truncate w-full ${
