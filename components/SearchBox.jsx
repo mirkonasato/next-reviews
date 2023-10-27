@@ -1,6 +1,8 @@
 'use client';
 
 import { Combobox } from '@headlessui/react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { useIsClient } from '@/lib/hooks';
 
 const reviews = [
@@ -12,21 +14,29 @@ const reviews = [
 ];
 
 export default function SearchBox() {
+  const router = useRouter();
   const isClient = useIsClient();
+  const [query, setQuery] = useState('');
 
-  // console.log('[SearchBox] isClient:', isClient);
+  const handleChange = (review) => {
+    router.push(`/reviews/${review.slug}`);
+  };
+
+  // console.log('[SearchBox] query:', query);
   if (!isClient) {
     return null;
   }
+  const filtered = reviews.filter((review) => review.title.includes(query));
   return (
     <div className="relative w-48">
-      <Combobox>
+      <Combobox onChange={handleChange}>
         <Combobox.Input placeholder="Search…"
+          value={query} onChange={(event) => setQuery(event.target.value)}
           className="border px-2 py-1 rounded w-full"
         />
         <Combobox.Options className="absolute bg-white py-1 w-full">
-          {reviews.map((review) => (
-            <Combobox.Option key={review.slug}>
+          {filtered.map((review) => (
+            <Combobox.Option key={review.slug} value={review}>
               {({ active }) => (
                 <span className={`block px-2 truncate w-full ${
                   active ? 'bg-orange-100' : ''
