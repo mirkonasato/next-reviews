@@ -17,8 +17,8 @@ export async function generateMetadata({ params: { slug } }) {
 }
 
 export default async function ReviewPage({ params: { slug } }) {
+  console.log('[ReviewPage] rendering', slug);
   const review = await getReview(slug);
-  // console.log('[ReviewPage] review', review);
   return (
     <>
       <Heading>{review.title}</Heading>
