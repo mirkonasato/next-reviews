@@ -1,3 +1,5 @@
+'use client';
+
 export default function ShareLinkButton() {
   const handleClick = () => {
     console.log('clicked!');
