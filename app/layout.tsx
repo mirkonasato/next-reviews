@@ -19,7 +19,7 @@ export default function RootLayout({ children }: LayoutProps) {
                 <Link href="/reviews">Reviews</Link>
               </li>
               <li>
-                <Link href="/about">About</Link>
+                <Link href="/about" prefetch={false}>About</Link>
               </li>
             </ul>
           </nav>
