@@ -22,6 +22,11 @@ export interface FullReview extends Review {
   body: string;
 }
 
+export interface PaginatedReviews {
+  pageCount: number;
+  reviews: Review[];
+}
+
 export async function getReview(slug: string): Promise<FullReview | null> {
   const { data } = await fetchReviews({
     filters: { slug: { $eq: slug } },
@@ -39,14 +44,17 @@ export async function getReview(slug: string): Promise<FullReview | null> {
   };
 }
 
-export async function getReviews(pageSize: number, page?: number): Promise<Review[]> {
-  const { data } = await fetchReviews({
+export async function getReviews(pageSize: number, page?: number): Promise<PaginatedReviews> {
+  const { data, meta } = await fetchReviews({
     fields: ['slug', 'title', 'subtitle', 'publishedAt'],
     populate: { image: { fields: ['url'] } },
     sort: ['publishedAt:desc'],
     pagination: { pageSize, page },
   });
-  return data.map(toReview);
+  return {
+    pageCount: meta.pagination.pageCount,
+    reviews: data.map(toReview),
+  };
 }
 
 export async function getSlugs(): Promise<string[]> {
