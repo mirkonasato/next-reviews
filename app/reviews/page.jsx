@@ -8,7 +8,7 @@ export const metadata = {
 
 export default async function ReviewsPage() {
   const reviews = await getReviews();
-  console.log('[ReviewsPage] reviews:', reviews);
+  // console.log('[ReviewsPage] reviews:', reviews);
   return (
     <>
       <Heading>Reviews</Heading>
