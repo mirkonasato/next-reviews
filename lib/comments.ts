@@ -10,6 +10,8 @@ export async function createComment({ slug, user, message }: CreateCommentData) 
 }
 
 export async function getComments(slug: string) {
+  // simulate delay:
+  await new Promise((resolve) => setTimeout(resolve, 3000));
   return await db.comment.findMany({
     where: { slug },
     orderBy: { postedAt: 'desc' },
