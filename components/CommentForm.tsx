@@ -1,6 +1,8 @@
 'use client';
 
 import type { FormEvent } from 'react';
+import type { ActionError } from '@/app/reviews/[slug]/actions';
+import { useState } from 'react';
 import { createCommentAction } from '@/app/reviews/[slug]/actions';
 
 export interface CommentFormProps {
@@ -9,12 +11,19 @@ export interface CommentFormProps {
 }
 
 export default function CommentForm({ slug, title }: CommentFormProps) {
+  const [error, setError] = useState<ActionError | null>(null);
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setError(null);
     const form = event.currentTarget;
     const formData = new FormData(form);
     const result = await createCommentAction(formData);
-    console.log('result:', result);
+    if (result?.isError) {
+      setError(result);
+    } else {
+      form.reset();
+    }
   };
 
   return (
@@ -40,6 +49,9 @@ export default function CommentForm({ slug, title }: CommentFormProps) {
           className="border px-2 py-1 rounded w-full"
         />
       </div>
+      {Boolean(error) && (
+        <p className="text-red-700">{error.message}</p>
+      )}
       <button type="submit"
         className="bg-orange-800 rounded px-2 py-1 self-center
                    text-slate-50 w-32 hover:bg-orange-700">
