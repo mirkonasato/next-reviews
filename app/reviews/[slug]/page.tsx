@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 import CommentForm from '@/components/CommentForm';
 import CommentList from '@/components/CommentList';
+import CommentListSkeleton from '@/components/CommentListSkeleton';
 import Heading from '@/components/Heading';
 import ShareLinkButton from '@/components/ShareLinkButton';
 import { getReview, getSlugs } from '@/lib/reviews';
@@ -61,7 +62,7 @@ export default async function ReviewPage({ params: { slug } }: ReviewPageProps) 
           Comments
         </h2>
         <CommentForm slug={slug} title={review.title} />
-        <Suspense fallback={<p>Loading...</p>}>
+        <Suspense fallback={<CommentListSkeleton />}>
           <CommentList slug={slug} />
         </Suspense>
       </section>
