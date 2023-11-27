@@ -1,3 +1,5 @@
+// 'use client';
+
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { createComment } from '@/lib/comments';
@@ -5,6 +7,9 @@ import { createComment } from '@/lib/comments';
 export default function CommentForm({ slug, title }) {
   async function action(formData) {
     'use server';
+    if (!formData.get('user')) {
+      return { isError: true, message: 'Name field is required' };
+    }
     const comment = await createComment({
       slug,
       user: formData.get('user'),
@@ -25,7 +30,7 @@ export default function CommentForm({ slug, title }) {
         <label htmlFor="userField" className="shrink-0 w-32">
           Your name
         </label>
-        <input id="userField" name="user"
+        <input id="userField" name="user" required maxLength={50}
           className="border px-2 py-1 rounded w-48"
         />
       </div>
@@ -33,7 +38,7 @@ export default function CommentForm({ slug, title }) {
         <label htmlFor="messageField" className="shrink-0 w-32">
           Your comment
         </label>
-        <textarea id="messageField" name="message"
+        <textarea id="messageField" name="message" required maxLength={500}
           className="border px-2 py-1 rounded w-full"
         />
       </div>
