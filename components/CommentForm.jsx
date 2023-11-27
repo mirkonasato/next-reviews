@@ -3,8 +3,16 @@
 import { createCommentAction } from '@/app/reviews/[slug]/actions';
 
 export default function CommentForm({ slug, title }) {
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    const result = await createCommentAction(formData);
+    console.log('result:', result);
+  };
+
   return (
-    <form action={createCommentAction}
+    <form onSubmit={handleSubmit}
       className="border bg-white flex flex-col gap-2 mt-3 px-3 py-3 rounded">
       <p className="pb-1">
         Already played <strong>{title}</strong>? Have your say!
@@ -14,7 +22,7 @@ export default function CommentForm({ slug, title }) {
         <label htmlFor="userField" className="shrink-0 w-32">
           Your name
         </label>
-        <input id="userField" name="user" required maxLength={50}
+        <input id="userField" name="user"
           className="border px-2 py-1 rounded w-48"
         />
       </div>
@@ -22,7 +30,7 @@ export default function CommentForm({ slug, title }) {
         <label htmlFor="messageField" className="shrink-0 w-32">
           Your comment
         </label>
-        <textarea id="messageField" name="message" required maxLength={500}
+        <textarea id="messageField" name="message"
           className="border px-2 py-1 rounded w-full"
         />
       </div>
