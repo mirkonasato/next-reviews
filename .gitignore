@@ -4,4 +4,5 @@
 /.next/
 /node_modules/
 /out/
+/prisma/*.db
 /scripts/strapi-response.json
