@@ -36,6 +36,8 @@ export async function generateMetadata({ params: { slug } }: ReviewPageProps): P
 
 export default async function ReviewPage({ params: { slug } }: ReviewPageProps) {
   console.log('[ReviewPage] rendering', slug);
+  // simulate delay:
+  // await new Promise((resolve) => setTimeout(resolve, 3000));
   const review = await getReview(slug);
   if (!review) {
     notFound();
