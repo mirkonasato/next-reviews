@@ -1,24 +1,10 @@
 'use client';
 
-import { useState } from 'react';
 import { createCommentAction } from '@/app/reviews/[slug]/actions';
+import { useFormState } from '@/lib/hooks';
 
 export default function CommentForm({ slug, title }) {
-  const [state, setState] = useState({ loading: false, error: null });
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setState({ loading: true, error: null });
-    const form = event.currentTarget;
-    const formData = new FormData(form);
-    const result = await createCommentAction(formData);
-    if (result?.isError) {
-      setState({ loading: false, error: result });
-    } else {
-      form.reset();
-      setState({ loading: false, error: null });
-    }
-  };
+  const [state, handleSubmit] = useFormState(createCommentAction);
 
   return (
     <form onSubmit={handleSubmit}
